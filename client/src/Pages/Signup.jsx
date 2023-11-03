@@ -3,9 +3,12 @@ import "./Signup.css";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import isStrongPassword from "../utils/isStrongPassword";
+import { useDispatch } from "react-redux";
 import validateEmail from "../utils/validateEmail";
+import { signup } from "../store/auth/authSlice";
 
 const Signup = () => {
+  const dispatch = useDispatch();
   const [creds, setCreds] = useState({
     name: "",
     email: "",
@@ -22,13 +25,15 @@ const Signup = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (validateEmail(creds.email) === false) toast.error("Please enter a valid email");
+    if (validateEmail(creds.email) === false)
+      toast.error("Please enter a valid email");
     else if (isStrongPassword(creds.password) === false)
       toast.error(
         "Your password must be a minimum of 8 characters and include at least one uppercase letter, one lowercase letter, one number, and one special character to ensure its strength and security."
       );
     else if (creds.password !== creds.cPassword)
       toast.error("Password and Confirm Password should be same");
+    dispatch(signup(creds));
   };
   return (
     <div className="signup">
