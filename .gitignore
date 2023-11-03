@@ -1,7 +1,7 @@
 # for server
 
-./server/node_modules
-./server/env
+/server/node_modules
+/server/.env
 
 # for client
-./client/node_modules
+/client/node_modules
