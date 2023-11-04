@@ -1,31 +1,54 @@
-# To-Do-application (NotesKey)
+# NotesKey - To-Do Application
 
-Notes key is a todo application on which one can create, delete edit their tasks.
-It is created with the help of MERN stack.
+NotesKey is a feature-rich to-do application designed to help users effortlessly create, edit, and delete their tasks. It is crafted using the MERN (MongoDB, Express, React, Node.js) stack, ensuring a seamless and responsive user experience.
 
-for running in the local machine. follow the following steps:
-## for Backend 
+## Setup Instructions for Local Environment
 
-1. copy the github link: https://github.com/janmesh799/To-Do-application
-2. paste in terminal
-3. run this command 'git clone https://github.com/janmesh799/To-Do-application'
-4. then 'cd To-Do-application'
-5. then run 'cd serve'
-6. then run 'npm i' to install all the backend dependencies
-7. then create a .env file and write the values of these 3 (PORT, MONGO_URI, SECRET_KEY);
-8. then run 'npm run serve'
-9. your backend should be listening
+### Backend Setup
 
+1. **Clone the Backend Repository**
+   - Copy the GitHub link: [NotesKey Backend Repository](https://github.com/janmesh799/To-Do-application)
+   - Paste the link in your terminal
+   - Run the command: `git clone https://github.com/janmesh799/To-Do-application`
 
-## for frontend
+2. **Navigate to the Backend Directory**
+   - Access the 'To-Do-application' directory
+   - Run: `cd To-Do-application`
 
-1. copy the github link: https://github.com/janmesh799/To-Do-application
-2. paste in terminal
-3. run this command 'git clone https://github.com/janmesh799/To-Do-application'
-4. then 'cd To-Do-application'
-5. then run 'cd client'
-6. then run 'npm i' to install all the frontend dependencies
-8. then run 'npm run start'
-9. your front will be deployed
+3. **Install Backend Dependencies**
+   - Move to the 'serve' directory
+   - Run: `cd serve`
+   - Install all the necessary backend dependencies by executing: `npm i`
 
+4. **Set Up Environment Variables**
+   - Create a `.env` file and define the values for the following variables: `PORT`, `MONGO_URI`, `SECRET_KEY`.
 
+5. **Start the Backend Server**
+   - Run the command: `npm run serve`
+   - Your backend should now be up and running, listening for connections.
+
+### Frontend Setup
+
+1. **Clone the Frontend Repository**
+   - Copy the GitHub link: [NotesKey Frontend Repository](https://github.com/janmesh799/To-Do-application)
+   - Paste the link in your terminal
+   - Run: `git clone https://github.com/janmesh799/To-Do-application`
+
+2. **Navigate to the Frontend Directory**
+   - Access the 'To-Do-application' directory
+   - Run: `cd To-Do-application`
+
+3. **Install Frontend Dependencies**
+   - Move to the 'client' directory
+   - Run: `cd client`
+   - Install all frontend dependencies by executing: `npm i`
+
+4. **Launch the Frontend Application**
+   - Run: `npm run start`
+   - Your frontend will be deployed, providing a user interface to interact with the to-do application.
+
+## Get Started
+
+Once the backend and frontend servers are running locally, open your browser and navigate to the specified local address to begin using NotesKey - the to-do application.
+
+Enjoy organizing and managing your tasks effortlessly with NotesKey!
