@@ -2,11 +2,12 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./authService";
 
 const authToken = localStorage.getItem("authToken");
+const user = localStorage.getItem("user");
 
 const initialState = {
-  isLoggedIn: false,
+  isLoggedIn: authToken === null ? false : true,
   isLoading: false,
-  user: null,
+  user: JSON.parse(user),
   authToken: authToken ? authToken : null,
   isError: false,
   errorMessage: null,
@@ -16,11 +17,11 @@ export const login = createAsyncThunk(
   "auth/login",
   async (userData, thunkAPI) => {
     try {
+      console.log(userData);
       const response = await authService.login(userData);
-      // console.log(response);
       if (response.success) return response;
       else {
-        throw new Error(response.message);
+        throw new Error(response.error.error);
       }
     } catch (error) {
       const message =
@@ -37,12 +38,10 @@ export const signup = createAsyncThunk(
   "auth/signup",
   async (userData, thunkAPI) => {
     try {
-      console.log(userData);
       const response = await authService.signup(userData);
-      // console.log(response);
       if (response.success) return response;
       else {
-        throw new Error(response.message);
+        throw new Error(response.error.error);
       }
     } catch (error) {
       const message =
@@ -81,12 +80,6 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    reset: (state) => {
-      state.isLoggedIn = false;
-      state.isLoading = false;
-      state.user = null;
-      state.authToken = null;
-    },
     logout: (state) => {
       state.isLoggedIn = false;
       state.isLoading = false;
@@ -111,6 +104,8 @@ const authSlice = createSlice({
           state.authToken = action.payload.authToken;
           state.user = action.payload.user;
           localStorage.setItem("authToken", state.authToken);
+
+          localStorage.setItem("user", JSON.stringify(action.payload.user));
         }
       })
       .addCase(login.rejected, (state, action) => {
@@ -129,8 +124,9 @@ const authSlice = createSlice({
           state.isLoading = false;
           state.isLoggedIn = true;
           state.authToken = action.payload.authToken;
-          state.user = action.payload.newUser;
+          state.user = action.payload.user;
           localStorage.setItem("authToken", state.authToken);
+          localStorage.setItem("user", JSON.stringify(action.payload.user));
         }
       })
       .addCase(signup.rejected, (state, action) => {
@@ -139,7 +135,7 @@ const authSlice = createSlice({
         state.authToken = null;
         state.user = null;
         state.isError = true;
-        state.errorMessage = "Signup failed, try again after some time.";
+        state.errorMessage = "error" + JSON.stringify(action);
       })
       .addCase(getUser.pending, (state) => {
         state.isLoggedIn = false;

@@ -18,7 +18,6 @@ const Login = async (req, res) => {
     }
     const savedPassword = user.password;
     const verified = await bcrypt.compare(password, savedPassword);
-    console.log(verified);
     if (!verified) {
       errorCode = 403;
       throw new Error("email or password is incorrect");

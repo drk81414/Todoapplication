@@ -1,14 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Signup.css";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import isStrongPassword from "../utils/isStrongPassword";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import validateEmail from "../utils/validateEmail";
-import { signup } from "../store/auth/authSlice";
+import { setErrorNull, signup } from "../store/auth/authSlice";
+import { useNavigate } from "react-router-dom";
+
+import { Bars } from "react-loader-spinner";
 
 const Signup = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { isLoggedIn, isLoading, isError, errorMessage } = useSelector(
+    (state) => state.auth
+  );
+
   const [creds, setCreds] = useState({
     name: "",
     email: "",
@@ -25,16 +33,30 @@ const Signup = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (validateEmail(creds.email) === false)
+    if (validateEmail(creds.email) === false) {
       toast.error("Please enter a valid email");
-    else if (isStrongPassword(creds.password) === false)
+      return;
+    } else if (isStrongPassword(creds.password) === false) {
       toast.error(
         "Your password must be a minimum of 8 characters and include at least one uppercase letter, one lowercase letter, one number, and one special character to ensure its strength and security."
       );
-    else if (creds.password !== creds.cPassword)
+      return;
+    } else if (creds.password !== creds.cPassword) {
       toast.error("Password and Confirm Password should be same");
+      return;
+    }
     dispatch(signup(creds));
   };
+
+  useEffect(() => {
+    if (isLoggedIn === true) navigate("/");
+  });
+  useEffect(() => {
+    if (isError === true) {
+      toast.error(errorMessage);
+      dispatch(setErrorNull());
+    }
+  }, [errorMessage, isError,dispatch]);
   return (
     <div className="signup">
       <div className="signup-container">
@@ -102,7 +124,30 @@ const Signup = () => {
               type="submit"
               className="signup-button"
             >
-              Signup<i class="fa-solid fa-right-to-bracket"></i>
+              {isLoading ? (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignContent: "center",
+                    margin: "auto",
+                  }}
+                >
+                  <Bars
+                    height="2rem"
+                    width="2rem"
+                    color="#000"
+                    ariaLabel="bars-loading"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                    visible={true}
+                  />
+                </div>
+              ) : (
+                <span>
+                  Signup<i className="fa-solid fa-right-to-bracket"></i>
+                </span>
+              )}
             </button>
             <p>
               Already have an account?{" "}
