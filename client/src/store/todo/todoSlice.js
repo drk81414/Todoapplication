@@ -2,8 +2,9 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import todoService from "./todoService";
 
 const initialState = {
-  taskList : [],
-  isLoading:false
+  taskList: [],
+  isLoading: false,
+  showAddModal: false,
 };
 
 export const fetchTasks = createAsyncThunk(
@@ -26,10 +27,66 @@ export const fetchTasks = createAsyncThunk(
     }
   }
 );
+export const markAsComplete = createAsyncThunk(
+  "todo/markAsComplete",
+  async ({ todoId, authToken }, thunkAPI) => {
+    try {
+      console.log(todoId, authToken);
+      const response = await todoService.markAsComplete({
+        todoId,
+        authToken,
+      });
+      if (response.success) return response;
+      else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+export const createNewTask = createAsyncThunk(
+  "todo/createNewTask",
+  async ({ authToken, newTask }, thunkAPI) => {
+    try {
+      console.log("test ", authToken, newTask);
+      const response = await todoService.addNewTask({
+        authToken,
+        newTask,
+      });
+      if (response.success) return response;
+      else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 const todoSlice = createSlice({
   name: "todo",
   initialState,
-  reducers: {},
+  reducers: {
+    openAddModal: (state) => {
+      state.showAddModal = true;
+    },
+    closeAddModal: (state) => {
+      state.showAddModal = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchTasks.pending, (state) => {
@@ -45,9 +102,27 @@ const todoSlice = createSlice({
       .addCase(fetchTasks.rejected, (state, action) => {
         state.taskList = [];
         state.isLoading = false;
+      })
+      .addCase(markAsComplete.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(markAsComplete.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(markAsComplete.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(createNewTask.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(createNewTask.fulfilled, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(createNewTask.rejected, (state, action) => {
+        state.isLoading = false;
       });
   },
 });
 
-// export const {} = todoSlice.actions;
+export const { openAddModal, closeAddModal } = todoSlice.actions;
 export default todoSlice.reducer;
