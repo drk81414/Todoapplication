@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import "./TaskComponent.css";
 import { useDispatch, useSelector } from "react-redux";
+import EditTaskModal from "./EditTaskModal";
 import {
   deleteTodo,
   fetchTasks,
   markAsComplete,
+  openEditModal,
 } from "../store/todo/todoSlice";
 import { toast } from "react-toastify";
 
@@ -31,6 +33,7 @@ const convertISOtoDate = (isoString) => {
 const TaskComponent = (props) => {
   const dispatch = useDispatch();
   const { authToken } = useSelector((state) => state.auth);
+  const { showEditModal } = useSelector((state) => state.todo);
   const task = props.task;
   const completed = props.completed;
   const [more, setMore] = useState(false);
@@ -46,14 +49,23 @@ const TaskComponent = (props) => {
     const todoId = task._id;
     dispatch(markAsComplete({ todoId, authToken }));
     toast.success(`task with title "${task.title}" marked as complete.`);
-    dispatch(fetchTasks(authToken));
+    setTimeout(() => {
+      dispatch(fetchTasks(authToken));
+    }, 5000);
   };
 
-  const deleteTask = () => {
+  const deleteTaskHandler = () => {
     const todoId = task._id;
     dispatch(deleteTodo({ authToken, todoId }));
     toast.success(`task with title "${task.title}" has been deleted.`);
-    dispatch(fetchTasks(authToken));
+    setTimeout(() => {
+      dispatch(fetchTasks(authToken));
+    }, 5000);
+  };
+
+  const editTaskHandler = () => {
+    const todoId = task._id;
+    dispatch(openEditModal(todoId));
   };
   return (
     <div
@@ -66,8 +78,17 @@ const TaskComponent = (props) => {
       </div>
       <div className="task-buttons">
         <i className="task-icon fa-solid fa-info"> more </i>
-        <i className=" task-icon fa-regular fa-pen-to-square"> Edit</i>
-        <i onClick={deleteTask} className=" task-icon fa-solid fa-trash"> Delete</i>
+        <i
+          onClick={editTaskHandler}
+          className=" task-icon fa-regular fa-pen-to-square"
+        >
+          {" "}
+          Edit
+        </i>
+        <i onClick={deleteTaskHandler} className=" task-icon fa-solid fa-trash">
+          {" "}
+          Delete
+        </i>
         <i
           style={{ display: `${completed ? "none" : "block"}` }}
           onClick={markAsCompleteHandler}
@@ -77,6 +98,11 @@ const TaskComponent = (props) => {
           mark as complete
         </i>
       </div>
+      {task._id === showEditModal && (
+        <div>
+          <EditTaskModal taskData={task} />
+        </div>
+      )}
     </div>
   );
 };

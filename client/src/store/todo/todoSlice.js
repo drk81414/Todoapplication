@@ -5,6 +5,7 @@ const initialState = {
   taskList: [],
   isLoading: false,
   showAddModal: false,
+  showEditModal: null,
 };
 
 export const fetchTasks = createAsyncThunk(
@@ -109,6 +110,12 @@ const todoSlice = createSlice({
     closeAddModal: (state) => {
       state.showAddModal = false;
     },
+    openEditModal: (state, action) => {
+      state.showEditModal = action.payload;
+    },
+    closeEditModal: (state) => {
+      state.showEditModal = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -156,5 +163,6 @@ const todoSlice = createSlice({
   },
 });
 
-export const { openAddModal, closeAddModal } = todoSlice.actions;
+export const { openAddModal, closeAddModal, openEditModal, closeEditModal } =
+  todoSlice.actions;
 export default todoSlice.reducer;

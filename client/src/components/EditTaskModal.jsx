@@ -1,12 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  createNewTask,
-  closeAddModal,
-  fetchTasks,
-} from "../store/todo/todoSlice";
+import { closeAddModal, fetchTasks } from "../store/todo/todoSlice";
 import { toast } from "react-toastify";
 import { Bars } from "react-loader-spinner";
+import convertISOtoDate from "../utils/convertISOtoDate";
 import "./AddTaskModal.css";
 
 function convertDatesToISO(date) {
@@ -26,49 +23,56 @@ const RadioInput = ({ label, value, checked, setter }) => {
   );
 };
 
-const AddTaskModal = (props) => {
-  const [newTask, setNewTask] = useState({
+const EditTaskModal = (props) => {
+  const [editedTask, setEditedTask] = useState({
     title: "",
     description: "",
     priority: null,
     dueDate: "",
   });
-  const { isLoading, showAddModal } = useSelector((state) => state.todo);
+  const oldData = props.taskData;
+  const { isLoading, showEditModal } = useSelector((state) => state.todo);
   const { authToken } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const task = props.task;
   const [priority, setPriority] = useState();
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
-    setNewTask({ ...newTask, [name]: value });
+    setEditedTask({ ...editedTask, [name]: value });
   };
-
+  useEffect(() => {
+    setEditedTask({
+      title: oldData.title,
+      description: oldData.description,
+      priority: oldData.priority,
+      dueDate: convertISOtoDate(oldData.dueDate),
+    });
+  });
   const submitHandler = (e) => {
     e.preventDefault();
 
-    if (newTask.title.trim() === "") {
+    if (editedTask.title.trim() === "") {
       toast.warn("Please enter a valid title");
       return;
     } else if (!priority) {
       toast.warn("Please select a priority");
       return;
-    } else if (newTask.dueDate === "") {
+    } else if (editedTask.dueDate === "") {
       toast.warn("Please select a date");
       return;
     }
 
-    const newTaskWithISODate = {
-      ...newTask,
+    const editedTaskWithISODate = {
+      ...editedTask,
       priority: priority,
-      title: newTask.title.trim(),
-      dueDate: convertDatesToISO(newTask.dueDate),
+      title: editedTask.title.trim(),
+      dueDate: convertDatesToISO(editedTask.dueDate),
     };
-    dispatch(createNewTask({ authToken, newTask: newTaskWithISODate }));
-    dispatch(closeAddModal());
-    toast.success("New task added successfully");
-    setTimeout(() => {
-      dispatch(fetchTasks(authToken));
-    }, 5000);
+    alert(JSON.stringify(editedTaskWithISODate));
+    // dispatch(edit({ authToken, editedTask: editedTaskWithISODate }));
+    // dispatch(closeAddModal());
+    // toast.success("New task added successfully");
+    // dispatch(fetchTasks(authToken));
   };
 
   return (
@@ -81,21 +85,21 @@ const AddTaskModal = (props) => {
           }}
           className=" fa-solid fa-xmark"
         ></i>
-        <h3 style={{ color: "white" }}>Add a new Task</h3>
+        <h3 style={{ color: "white" }}>Edit Task</h3>
         <form>
           <input
             className="input-field2"
             type="text"
             placeholder="Title"
             name="title"
-            value={newTask.title}
+            value={editedTask.title}
             onChange={onChangeHandler}
           />
           <textarea
             className="input-field2"
             placeholder="Description"
             name="description"
-            value={newTask.description}
+            value={editedTask.description}
             onChange={onChangeHandler}
           />
           <div
@@ -131,7 +135,7 @@ const AddTaskModal = (props) => {
             onChange={onChangeHandler}
             name="dueDate"
             defaultValue={"2023-11-24"}
-            value={newTask.dueDate}
+            value={editedTask.dueDate}
           />
           <button
             onClick={submitHandler}
@@ -158,7 +162,7 @@ const AddTaskModal = (props) => {
                 />
               </div>
             ) : (
-              <span>Add Task</span>
+              <span>Edit Task</span>
             )}
           </button>
         </form>
@@ -167,4 +171,4 @@ const AddTaskModal = (props) => {
   );
 };
 
-export default AddTaskModal;
+export default EditTaskModal;

@@ -1,9 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@1,200&display=swap");
 .login {
-  height: 100vh;
+ height: 100vh;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 100vw 100vh !important;
+  background-size: 100vw 110vh !important;
   background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
     url(../images/Todo_Login3.jpg);
 }
@@ -18,12 +18,12 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: auto 2rem;
+  margin: 1rem 2rem;
 }
 .login-heading {
   font-family: sans-serif;
   font-weight: 600;
-  margin: 5% auto 1% auto;
+  margin: 4% auto 1% auto;
   font-size: 4rem;
   text-align: center;
   color: rgb(218, 202, 202);
@@ -32,9 +32,12 @@
   font-stretch: expanded;
 }
 .login-form-container {
-  width: 28vw;
+  width: 30vw;
   height: 60vh;
-  margin: 10vh auto auto auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  /* oveflo */
+  margin: 6vh auto auto auto;
   background-color: rgba(0, 0, 0, 0.3);
   border-radius: 0.5rem;
 }
@@ -44,25 +47,27 @@
   color: rgb(218, 202, 202);
   text-align: center;
   margin-top: 0rem;
-  height: 5rem;
+  margin-bottom: 0rem;
+  height: 4rem;
   font-family: sans-serif;
   border-radius: 0.5rem 0.5rem 0% 0%;
   background-color: #eba04a57;
 }
 .login-form-container p {
-    margin: 4rem 0rem 0rem 0rem;
+  margin: 1rem 0rem 0rem 0rem;
   color: #999;
   width: 68%;
   text-align: center;
 }
-form {
-  width: 40vw;
-  height: 40vh;
+.login-form-container form {
+  width: 43vw;
+  height: 30vh;
   /* border: solid white 2px; */
-  margin: auto;
+  margin: 5rem auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
+
 }
 
 .input-field {
@@ -77,4 +82,22 @@ form {
   font-size: 1.25rem;
   color: white;
   background: transparent;
+}
+.show-pass-label {
+  font-size: 1rem;
+  color: #999;
+}
+.cpassword-checkbox {
+  font-size: 2rem;
+  margin: 0rem 1rem;
+}
+.login-button {
+  margin: 1rem auto 2rem auto;
+  padding: 0.75rem 0rem;
+  width: 10rem;
+  height: 4rem;
+  border: none;
+  font-size: 1.25rem;
+  font-stretch: expanded;
+  border-radius: 2%;
 }

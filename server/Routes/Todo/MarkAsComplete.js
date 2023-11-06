@@ -4,9 +4,7 @@ const markAsComplete = async (req, res) => {
   let errorCode = null;
   try {
     const todoId = req.body.todoId;
-    console.log(req.body.todoId);
     let todo = await Todo.findById(todoId);
-    console.log(todo);
     if (!todo) {
       errorCode = 404;
       throw new Error("Todo item not found");
