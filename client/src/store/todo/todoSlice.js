@@ -75,6 +75,29 @@ export const createNewTask = createAsyncThunk(
     }
   }
 );
+export const deleteTodo = createAsyncThunk(
+  "todo/deleteTodo",
+  async ({ authToken, todoId }, thunkAPI) => {
+    try {
+      const response = await todoService.deleteTask({
+        authToken,
+        todoId,
+      });
+      if (response.success) return response;
+      else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 const todoSlice = createSlice({
   name: "todo",
@@ -119,6 +142,15 @@ const todoSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(createNewTask.rejected, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(deleteTodo.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteTodo.fulfilled, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(deleteTodo.rejected, (state, action) => {
         state.isLoading = false;
       });
   },

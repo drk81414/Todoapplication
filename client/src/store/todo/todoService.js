@@ -37,6 +37,21 @@ const markAsComplete = async ({ todoId, authToken }) => {
     return { error: err.response.data };
   }
 };
+const deleteTask = async ({ todoId, authToken }) => {
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        authToken: authToken,
+        todoId,
+      },
+    };
+    const response = await axios.delete(API_URL + "/deleteTodo", config);
+    return response.data;
+  } catch (err) {
+    return { error: err.response.data };
+  }
+};
 
 const addNewTask = async ({ authToken, newTask }) => {
   try {
@@ -46,7 +61,7 @@ const addNewTask = async ({ authToken, newTask }) => {
         authToken: authToken,
       },
     };
-    console.log("new todo = ", newTask, authToken)
+    console.log("new todo = ", newTask, authToken);
     const response = await axios.post(API_URL + "/create", newTask, config);
     return response.data;
   } catch (err) {
@@ -57,7 +72,8 @@ const addNewTask = async ({ authToken, newTask }) => {
 const authService = {
   fetchTasks,
   markAsComplete,
-  addNewTask
+  addNewTask,
+  deleteTask
 };
 
 export default authService;

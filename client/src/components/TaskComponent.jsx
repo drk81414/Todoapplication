@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import "./TaskComponent.css";
 import { useDispatch, useSelector } from "react-redux";
-import { markAsComplete } from "../store/todo/todoSlice";
+import {
+  deleteTodo,
+  fetchTasks,
+  markAsComplete,
+} from "../store/todo/todoSlice";
+import { toast } from "react-toastify";
 
 // const convertISOtoDate = require("../utils/convertISOtoDate");
 const convertISOtoDate = (isoString) => {
@@ -27,6 +32,7 @@ const TaskComponent = (props) => {
   const dispatch = useDispatch();
   const { authToken } = useSelector((state) => state.auth);
   const task = props.task;
+  const completed = props.completed;
   const [more, setMore] = useState(false);
   const getBoxShadow = (priority) => {
     if (priority === 3)
@@ -38,7 +44,16 @@ const TaskComponent = (props) => {
   };
   const markAsCompleteHandler = () => {
     const todoId = task._id;
-    dispatch(markAsComplete({todoId, authToken}));
+    dispatch(markAsComplete({ todoId, authToken }));
+    toast.success(`task with title "${task.title}" marked as complete.`);
+    dispatch(fetchTasks(authToken));
+  };
+
+  const deleteTask = () => {
+    const todoId = task._id;
+    dispatch(deleteTodo({ authToken, todoId }));
+    toast.success(`task with title "${task.title}" has been deleted.`);
+    dispatch(fetchTasks(authToken));
   };
   return (
     <div
@@ -52,8 +67,12 @@ const TaskComponent = (props) => {
       <div className="task-buttons">
         <i className="task-icon fa-solid fa-info"> more </i>
         <i className=" task-icon fa-regular fa-pen-to-square"> Edit</i>
-        <i className=" task-icon fa-solid fa-trash"> Delete</i>
-        <i onClick={markAsCompleteHandler} className=" task-icon fa-solid fa-check">
+        <i onClick={deleteTask} className=" task-icon fa-solid fa-trash"> Delete</i>
+        <i
+          style={{ display: `${completed ? "none" : "block"}` }}
+          onClick={markAsCompleteHandler}
+          className=" task-icon fa-solid fa-check"
+        >
           {" "}
           mark as complete
         </i>

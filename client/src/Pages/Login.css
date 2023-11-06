@@ -78,13 +78,3 @@ form {
   color: white;
   background: transparent;
 }
-
-.login-button {
-  margin: 4rem auto 1rem auto;
-  width: 10rem;
-  height: 4rem;
-  border: none;
-  font-size: 1.25rem;
-  font-stretch: expanded;
-  border-radius: 2%;
-}
