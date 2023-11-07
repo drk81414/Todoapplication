@@ -6,6 +6,7 @@ const initialState = {
   isLoading: false,
   showAddModal: false,
   showEditModal: null,
+  showDesc: null,
 };
 
 export const fetchTasks = createAsyncThunk(
@@ -76,6 +77,31 @@ export const createNewTask = createAsyncThunk(
     }
   }
 );
+export const editTask = createAsyncThunk(
+  "todo/editTask",
+  async ({ authToken, editedTask, todoId }, thunkAPI) => {
+    try {
+      // console.log("test ", authToken, newTask);
+      const response = await todoService.editTask({
+        authToken,
+        editedTask,
+        todoId,
+      });
+      if (response.success) return response;
+      else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 export const deleteTodo = createAsyncThunk(
   "todo/deleteTodo",
   async ({ authToken, todoId }, thunkAPI) => {
@@ -115,6 +141,12 @@ const todoSlice = createSlice({
     },
     closeEditModal: (state) => {
       state.showEditModal = null;
+    },
+    openDescModal: (state, action) => {
+      state.showDesc = action.payload;
+    },
+    closeDescModal: (state) => {
+      state.showDesc = null;
     },
   },
   extraReducers: (builder) => {
@@ -159,10 +191,25 @@ const todoSlice = createSlice({
       })
       .addCase(deleteTodo.rejected, (state, action) => {
         state.isLoading = false;
+      })
+      .addCase(editTask.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(editTask.fulfilled, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(editTask.rejected, (state, action) => {
+        state.isLoading = false;
       });
   },
 });
 
-export const { openAddModal, closeAddModal, openEditModal, closeEditModal } =
-  todoSlice.actions;
+export const {
+  openAddModal,
+  closeAddModal,
+  openEditModal,
+  closeEditModal,
+  openDescModal,
+  closeDescModal,
+} = todoSlice.actions;
 export default todoSlice.reducer;

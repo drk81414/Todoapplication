@@ -68,12 +68,29 @@ const addNewTask = async ({ authToken, newTask }) => {
     return { error: err.response.data };
   }
 };
+const editTask = async ({ authToken, todoId, editedTask }) => {
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        authToken: authToken,
+        todoId: todoId,
+      },
+    };
+    // console.log("new todo = ", newTask, authToken);
+    const response = await axios.put(API_URL + "/editTodo", editedTask, config);
+    return response.data;
+  } catch (err) {
+    return { error: err.response.data };
+  }
+};
 
 const authService = {
   fetchTasks,
   markAsComplete,
   addNewTask,
-  deleteTask
+  deleteTask,
+  editTask
 };
 
 export default authService;

@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { closeAddModal, fetchTasks } from "../store/todo/todoSlice";
+import {
+  closeAddModal,
+  closeEditModal,
+  editTask,
+  fetchTasks,
+} from "../store/todo/todoSlice";
 import { toast } from "react-toastify";
 import { Bars } from "react-loader-spinner";
 import convertISOtoDate from "../utils/convertISOtoDate";
@@ -24,30 +29,22 @@ const RadioInput = ({ label, value, checked, setter }) => {
 };
 
 const EditTaskModal = (props) => {
-  const [editedTask, setEditedTask] = useState({
-    title: "",
-    description: "",
-    priority: null,
-    dueDate: "",
-  });
   const oldData = props.taskData;
+  const [editedTask, setEditedTask] = useState({
+    title: oldData.title,
+    description: oldData.description,
+    priority: oldData.priority,
+    dueDate: convertISOtoDate(oldData.dueDate),
+  });
   const { isLoading, showEditModal } = useSelector((state) => state.todo);
   const { authToken } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const task = props.task;
-  const [priority, setPriority] = useState();
+  const [priority, setPriority] = useState(oldData.priority);
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     setEditedTask({ ...editedTask, [name]: value });
   };
-  useEffect(() => {
-    setEditedTask({
-      title: oldData.title,
-      description: oldData.description,
-      priority: oldData.priority,
-      dueDate: convertISOtoDate(oldData.dueDate),
-    });
-  });
   const submitHandler = (e) => {
     e.preventDefault();
 
@@ -61,18 +58,12 @@ const EditTaskModal = (props) => {
       toast.warn("Please select a date");
       return;
     }
-
-    const editedTaskWithISODate = {
-      ...editedTask,
-      priority: priority,
-      title: editedTask.title.trim(),
-      dueDate: convertDatesToISO(editedTask.dueDate),
-    };
-    alert(JSON.stringify(editedTaskWithISODate));
-    // dispatch(edit({ authToken, editedTask: editedTaskWithISODate }));
-    // dispatch(closeAddModal());
-    // toast.success("New task added successfully");
-    // dispatch(fetchTasks(authToken));
+    dispatch(editTask({ authToken, editedTask, todoId: oldData._id }));
+    dispatch(closeEditModal());
+    toast.success("task edited successfully");
+    setTimeout(() => {
+      dispatch(fetchTasks(authToken));
+    }, 5000);
   };
 
   return (
@@ -81,7 +72,7 @@ const EditTaskModal = (props) => {
         <i
           style={{ cursor: "pointer" }}
           onClick={() => {
-            dispatch(closeAddModal());
+            dispatch(closeEditModal());
           }}
           className=" fa-solid fa-xmark"
         ></i>

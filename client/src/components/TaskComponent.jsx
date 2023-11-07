@@ -6,9 +6,11 @@ import {
   deleteTodo,
   fetchTasks,
   markAsComplete,
+  openDescModal,
   openEditModal,
 } from "../store/todo/todoSlice";
 import { toast } from "react-toastify";
+import ShowDescriptionModal from "./ShowDescriptionModal";
 
 // const convertISOtoDate = require("../utils/convertISOtoDate");
 const convertISOtoDate = (isoString) => {
@@ -33,7 +35,7 @@ const convertISOtoDate = (isoString) => {
 const TaskComponent = (props) => {
   const dispatch = useDispatch();
   const { authToken } = useSelector((state) => state.auth);
-  const { showEditModal } = useSelector((state) => state.todo);
+  const { showEditModal, showDesc } = useSelector((state) => state.todo);
   const task = props.task;
   const completed = props.completed;
   const [more, setMore] = useState(false);
@@ -67,6 +69,10 @@ const TaskComponent = (props) => {
     const todoId = task._id;
     dispatch(openEditModal(todoId));
   };
+
+  const descriptionTaskHandler = () => {
+    dispatch(openDescModal(task._id));
+  };
   return (
     <div
       style={{ boxShadow: getBoxShadow(task.priority) }}
@@ -77,7 +83,13 @@ const TaskComponent = (props) => {
         <p className="task-due">Due on: {convertISOtoDate(task.dueDate)}</p>
       </div>
       <div className="task-buttons">
-        <i className="task-icon fa-solid fa-info"> more </i>
+        <i
+          onClick={descriptionTaskHandler}
+          className="task-icon fa-solid fa-info"
+        >
+          {" "}
+          more{" "}
+        </i>
         <i
           onClick={editTaskHandler}
           className=" task-icon fa-regular fa-pen-to-square"
@@ -101,6 +113,11 @@ const TaskComponent = (props) => {
       {task._id === showEditModal && (
         <div>
           <EditTaskModal taskData={task} />
+        </div>
+      )}
+      {task._id === showDesc && (
+        <div>
+          <ShowDescriptionModal task={task} />
         </div>
       )}
     </div>
