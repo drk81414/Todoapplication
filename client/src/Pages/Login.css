@@ -34,7 +34,7 @@
 .login-form-container {
   width: 30vw;
   height: 60vh;
-  overflow-y: scroll;
+  overflow-y: hidden;
   overflow-x: hidden;
   /* oveflo */
   margin: 6vh auto auto auto;
