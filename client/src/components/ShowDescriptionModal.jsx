@@ -18,9 +18,11 @@ const ShowDescriptionModal = (props) => {
           }}
           className=" fa-solid fa-xmark"
         ></i>
-        <h3> {task.title} </h3>
-        <br/>
-        <p > {task.description} </p>
+        <div>
+          <h3> {task.title} </h3>
+          <br />
+          <p> {task.description} </p>
+        </div>
       </div>
     </div>
   );
