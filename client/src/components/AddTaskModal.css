@@ -5,8 +5,10 @@
   border: 0.2px solid white;
   margin: 5vh auto 10vh auto;
   width: 50vw;
-  height: 80vh;
+  height: 50vh;
+  text-align: center;
   background-color: rgba(0, 0, 0, 0.397);
+  position: relative;
 }
 .add-modal h3 {
   text-align: center;
@@ -16,8 +18,10 @@
 }
 .add-modal i {
   color: white;
-  margin-right: 5rem;
-  text-align: right;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
 }
 
 .add-modal-container {
@@ -62,3 +66,33 @@
     border-radius: 2%;
   }
   
+
+  /* Media queries for responsiveness */
+
+/* For mobile devices */
+@media only screen and (max-width: 600px) {
+  .add-modal {
+    margin: -10vh 0vh !important;
+    width: 90vw;
+    height: 90vh;
+  }
+  /* Add other styles for mobile devices here */
+}
+
+/* For tablet devices */
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+  .add-modal {
+    width: 70vw;
+    height: 80vh;
+  }
+  /* Add other styles for tablet devices here */
+}
+
+/* For laptop screens */
+@media only screen and (min-width: 1025px) {
+  .add-modal {
+    width: 50vw;
+    height: 80vh;
+  }
+  /* Add other styles for laptop screens here */
+}
