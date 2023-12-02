@@ -5,20 +5,9 @@
 }
 
 .typewriter h1,
-h2 {
-  width: 50vw;
-  color: #fff;
-  font-family: monospace;
-  text-align: center;
-  overflow: hidden; /* Ensures the content is not revealed until the animation */
-  white-space: nowrap; /* Keeps the content on a single line */
-  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
-  letter-spacing: 0.15em; /* Adjust as needed */
-  animation: typing 3.5s steps(30, end), blink-caret 0.5s step-end infinite;
-}
+h2,
 .reverse-typewriter h1,
 h2 {
-  width: 50vw;
   color: #fff;
   font-family: monospace;
   text-align: center;
@@ -26,7 +15,40 @@ h2 {
   white-space: nowrap; /* Keeps the content on a single line */
   margin: 0 auto; /* Gives that scrolling effect as the typing happens */
   letter-spacing: 0.15em; /* Adjust as needed */
-  animation: reverseTyping 3.5s steps(30, end);
+}
+
+/* For mobile devices */
+@media only screen and (max-width: 480px) {
+  .typewriter h1,
+  h2,
+  .reverse-typewriter h1,
+  h2 {
+    font-size: 1rem;
+    width: 80vw;
+    animation: typing 3.5s steps(30, end), blink-caret 0.5s step-end infinite;
+  }
+}
+
+/* For tablet devices */
+@media only screen and (min-width: 481px) and (max-width: 1024px) {
+  .typewriter h1,
+  h2,
+  .reverse-typewriter h1,
+  h2 {
+    width: 70vw;
+    animation: typing 3.5s steps(30, end), blink-caret 0.5s step-end infinite;
+  }
+}
+
+/* For laptop screens */
+@media only screen and (min-width: 1025px) {
+  .typewriter h1,
+  h2,
+  .reverse-typewriter h1,
+  h2 {
+    width: 50vw;
+    animation: typing 3.5s steps(30, end), blink-caret 0.5s step-end infinite;
+  }
 }
 
 /* The typing effect */
@@ -39,6 +61,7 @@ h2 {
     display: block;
   }
 }
+
 @keyframes reverseTyping {
    0% {
     width: 0;
@@ -48,27 +71,17 @@ h2 {
   }
   100%{
     display: none;
-
   }
 }
 
-/* The typewriter cursor effect
-@keyframes blink-caret {
-  from,
-  to {
-    border-color: transparent;
-  }
-  50% {
-    border-color: transparent;
-  }
-} */
 .todo-container{
   height: 5rem;
-    display: flex;;
-    flex-direction: column;
-    justify-content: center;
-    align-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
 }
+
 .add-button {
   background-color: transparent;
   border: none;
@@ -77,12 +90,31 @@ h2 {
   margin: auto;
   color: white;
   border: 0.01rem solid white;
-  /* margin: 5rem auto 2rem auto; */
   font-size: 1.5rem;
 }
+
 .incomplete-task-container{
   width: 60vw;
-
   margin: 2rem auto auto auto;
-  
+}
+
+/* For mobile devices */
+@media only screen and (max-width: 480px) {
+  .incomplete-task-container {
+    width: 80vw;
+  }
+}
+
+/* For tablet devices */
+@media only screen and (min-width: 481px) and (max-width: 1024px) {
+  .incomplete-task-container {
+    width: 70vw;
+  }
+}
+
+/* For laptop screens */
+@media only screen and (min-width: 1025px) {
+  .incomplete-task-container {
+    width: 60vw;
+  }
 }

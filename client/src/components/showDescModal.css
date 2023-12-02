@@ -46,3 +46,40 @@
   display: flex;
   justify-content: center;
 }
+
+@media only screen and (max-width: 600px) {
+  /* For mobile phones: */
+  .show-modal {
+    margin: 0vh 1vh 2vh 1vh;
+    width: 80vw;
+    height: 80vh;
+  }
+  .show-modal div p {
+    text-align: center;
+    font-family: sans-serif;
+    font-size: 1.5rem;
+    max-height: 50vh;
+    overflow-y: scroll;
+  }
+  .show-modal div h3 {
+    max-height: 10vh;
+  }
+  
+}
+
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+  /* For tablets: */
+  .show-modal {
+    width: 70vw;
+    height: 70vh;
+  }
+  
+}
+
+@media only screen and (min-width: 768px) {
+  /* For laptops: */
+  .show-modal {
+    width: 50vw;
+    height: 50vh;
+  }
+}
