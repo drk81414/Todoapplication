@@ -148,6 +148,22 @@ const todoSlice = createSlice({
     closeDescModal: (state) => {
       state.showDesc = null;
     },
+    sortByPriority: (state) => {
+      let sortedList = [...state.taskList].sort(
+        (a, b) => a.priority - b.priority
+      );
+      state.taskList = sortedList;
+    },
+    sortByDueDate: (state) => {
+      let sortedList = [...state.taskList].sort(
+        (a, b) => {
+          const dateA = new Date(a.dueDate);
+          const dateB = new Date(b.dueDate);
+          return dateA - dateB;
+        }
+      );
+      state.taskList = sortedList;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -211,5 +227,7 @@ export const {
   closeEditModal,
   openDescModal,
   closeDescModal,
+  sortByPriority,
+  sortByDueDate
 } = todoSlice.actions;
 export default todoSlice.reducer;
