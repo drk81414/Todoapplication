@@ -17,6 +17,12 @@ app.listen(PORT, () => {
   console.log(`TO DO list backend is listening on http://localhost:${PORT}`);
 });
 
+app.get('/', (req, res) => {
+  return res.json({
+    "message" : "running...."
+  })
+})
+
 app.use("/api/auth", require("./Routes/Authentication.js"));
 app.use("/api/todo", require("./Routes/Todo.js"));
 
